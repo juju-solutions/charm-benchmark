@@ -12,6 +12,8 @@ else
   NOSE = venv/bin/nosetests
 endif
 
+PROJECT=benchmark-tools
+
 # ###########
 # Build
 # ###########
@@ -32,10 +34,9 @@ clean_venv:
 
 .PHONY: clean
 clean:
+	rm -rf MANIFEST dist/* $(PROJECT).egg-info .coverage
 	find . -name '*.pyc' -delete
-	find . -name '*.bak' -delete
-	find . -name __pycache__ -delete
-	rm -f .coverage
+	rm -rf venv
 
 develop: lib/python*/site-packages/benchmark_tools.egg-link
 lib/python*/site-packages/benchmark_tools.egg-link:
@@ -85,3 +86,6 @@ check: test lint
 
 .PHONY: all
 all: clean venv coverage lint
+
+release: clean
+	tar --exclude-vcs -cvzf ../benchmark-tools.tar.gz *
