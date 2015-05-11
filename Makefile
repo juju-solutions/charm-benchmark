@@ -12,7 +12,7 @@ else
   NOSE = venv/bin/nosetests
 endif
 
-PROJECT=benchmark-tools
+PROJECT=charmbenchmark
 
 # ###########
 # Build
@@ -38,8 +38,8 @@ clean:
 	find . -name '*.pyc' -delete
 	rm -rf venv
 
-develop: lib/python*/site-packages/benchmark_tools.egg-link
-lib/python*/site-packages/benchmark_tools.egg-link:
+develop: lib/python*/site-packages/charmbenchmark.egg-link
+lib/python*/site-packages/charmbenchmark.egg-link:
 	$(PY) setup.py develop
 
 .PHONY: sysdeps
@@ -88,4 +88,4 @@ check: test lint
 all: clean venv coverage lint
 
 release: clean
-	tar --exclude-vcs -cvzf ../benchmark-tools.tar.gz *
+	tar --exclude-vcs -cvzf ../charm-benchmark.tar.gz *

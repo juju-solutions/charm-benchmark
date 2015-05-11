@@ -1,6 +1,6 @@
-# benchmark-tools
+# charm-benchmark
 
-Benchmark-tools provides commands to ease the development of benchmark charms.
+charm-benchmark provides commands to ease the development of benchmark charms. You can either import the python library into your action, or use the equivalent CLI commands.
 
     #!/bin/bash
 
@@ -10,6 +10,10 @@ Benchmark-tools provides commands to ease the development of benchmark charms.
 
     benchmark-finish || true
 
-# Usage
+# Installation
+
+    $ pip install charm-benchmark
+
+# Development
 
     $ python setup.py develop

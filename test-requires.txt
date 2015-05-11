@@ -4,3 +4,4 @@ nose
 mock
 cherrypy
 pyyaml
+six

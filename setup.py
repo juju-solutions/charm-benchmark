@@ -12,16 +12,16 @@ tests_require = [
 
 
 setup(
-    name='benchmark_tools',
+    name='charm-benchmark',
     version='0.0.1',
-    description='Utilities to ease the development of benchmarks',
+    description='Library to aid in the creation of benchmark actions in Juju',
     install_requires=install_requires,
     url="https://launchpad.net/~cabs-team",
-    packages=['benchmark_tools'],
+    packages=['charmbenchmark'],
     entry_points={
         'console_scripts': [
-            'benchmark-start=benchmark_tools.start:main',
-            'benchmark-finish=benchmark_tools.finish:main',
+            'benchmark-start=charmbenchmark.Benchmark:start',
+            'benchmark-finish=charmbenchmark.Benchmark:finish',
         ]
     }
 )

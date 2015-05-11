@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import time
-from .common import action_set
+from charmhelpers.hookenv import action_set
 import subprocess
 import os
 
