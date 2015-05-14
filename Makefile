@@ -38,8 +38,8 @@ clean:
 	find . -name '*.pyc' -delete
 	rm -rf venv
 
-develop: lib/python*/site-packages/charmbenchmark.egg-link
-lib/python*/site-packages/charmbenchmark.egg-link:
+develop: lib/python*/site-packages/$(PROJECT).egg-link
+lib/python*/site-packages/$(PROJECT).egg-link:
 	$(PY) setup.py develop
 
 .PHONY: sysdeps
@@ -75,7 +75,7 @@ py3test:
 .PHONY: coverage
 coverage: $(NOSE)
 	@echo Testing with coverage...
-	@$(NOSE) --nologcapture --with-coverage --cover-package=actions_cli
+	@$(NOSE) --nologcapture --with-coverage --cover-package=$(PROJECT)
 
 .PHONY: lint
 lint:
@@ -86,6 +86,3 @@ check: test lint
 
 .PHONY: all
 all: clean venv coverage lint
-
-release: clean
-	tar --exclude-vcs -cvzf ../charm-benchmark.tar.gz *
