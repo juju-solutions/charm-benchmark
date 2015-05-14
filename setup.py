@@ -2,6 +2,7 @@ from setuptools import setup
 
 install_requires = [
     'PyYAML',
+    'charmhelpers'
 ]
 
 tests_require = [
@@ -20,8 +21,10 @@ setup(
     packages=['charmbenchmark'],
     entry_points={
         'console_scripts': [
-            'benchmark-start=charmbenchmark.Benchmark:start',
-            'benchmark-finish=charmbenchmark.Benchmark:finish',
+            'benchmark-start=charmbenchmark.cli.start:main',
+            'benchmark-finish=charmbenchmark.cli.finish:main',
+            'benchmark-actions=charmbenchmark.cli.actions:main',
+            'benchmark-composite=charmbenchmark.cli.composite:main',
         ]
     }
 )
