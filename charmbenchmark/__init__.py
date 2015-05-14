@@ -67,45 +67,42 @@ class Benchmark():
                         f.write("%s=%s\n" % (key, val))
 
     @staticmethod
+    def set_data(value):
+        try:
+            action_set(value)
+            return True
+        except OSError:
+            return False
+
+    @staticmethod
     def set_composite_score(value, units, direction='asc'):
         """
         Set the composite score for a benchmark run. This is a single number
         representative of the benchmark results. This could be the most
         important metric, or an amalgamation of metric scores.
         """
-        try:
-            action_set({
-                "meta.composite": {
-                    'value': value, 'units': units, 'direction': direction
-                }
-            })
-            return True
-        except OSError:  # File not found -- we're not in an action context
-            return False
+        return Benchmark.set_data({
+            "meta.composite": {
+                'value': value, 'units': units, 'direction': direction
+            }
+        })
+
 
     @staticmethod
     def start():
-        try:
-            action_set({
-                'meta.start': time.strftime('%Y-%m-%dT%H:%M:%SZ')
-            })
+        """
+        If the cabs-collector charm is installed, take a snapshot
+        of the current profile data.
+        """
+        if os.path.exists(COLLECT_PROFILE_DATA):
+            subprocess.check_output([COLLECT_PROFILE_DATA])
 
-            """
-            If the cabs-collector charm is installed, take a snapshot
-            of the current profile data.
-            """
-            if os.path.exists(COLLECT_PROFILE_DATA):
-                subprocess.check_output([COLLECT_PROFILE_DATA])
-            return True
-        except OSError:  # File not found -- we're not in an action context
-            return False
+        return Benchmark.set_data({
+            'meta.start': time.strftime('%Y-%m-%dT%H:%M:%SZ')
+        })
 
     @staticmethod
     def finish():
-        try:
-            action_set({
-                'meta.stop': time.strftime('%Y-%m-%dT%H:%M:%SZ')
-            })
-            return True
-        except OSError:  # File not found -- we're not in an action context
-            return False
+        return Benchmark.set_data({
+            'meta.stop': time.strftime('%Y-%m-%dT%H:%M:%SZ')
+        })

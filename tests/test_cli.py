@@ -75,16 +75,28 @@ class TestBenchmark(TestCase):
                 relation_settings={'benchmarks': ",".join(actions)}
             )
 
+            # Test benchmark.conf
             _open.assert_called_with('/etc/benchmark.conf', 'w')
             for key, val in iter(FAKE_RELATION['benchmark:0']['benchmark/0'].items()):
                 _file.write.assert_any_called("%s=%s\n" % (key, val))
 
+            relation_get.return_value = None
+            Benchmark(actions)
+
+
     @mock.patch('charmbenchmark.action_set')
-    @mock.patch('charmbenchmark.Benchmark.start')
-    def test_benchmark_oserror(self, start, action_set):
-        start.return_value = False
-        action_set.side_effect = IOError('File not found')
-        # action_set.return_value = False
+    def test_benchmark_start_oserror(self, action_set):
+        action_set.side_effect = OSError('File not found')
+        self.assertFalse(Benchmark.start())
+
+    @mock.patch('charmbenchmark.action_set')
+    def test_benchmark_start_oserror(self, action_set):
+        action_set.side_effect = OSError('File not found')
+        self.assertFalse(Benchmark.start())
+
+    @mock.patch('charmbenchmark.action_set')
+    def test_benchmark_start_oserror(self, action_set):
+        action_set.side_effect = OSError('File not found')
         self.assertFalse(Benchmark.start())
 
     @mock.patch('charmbenchmark.action_set')
