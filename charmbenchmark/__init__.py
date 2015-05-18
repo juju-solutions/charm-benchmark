@@ -81,12 +81,10 @@ class Benchmark():
         representative of the benchmark results. This could be the most
         important metric, or an amalgamation of metric scores.
         """
-        return Benchmark.set_data({
-            "meta.composite": {
-                'value': value, 'units': units, 'direction': direction
-            }
-        })
-
+        Benchmark.set_data({'meta.composite.value': value})
+        Benchmark.set_data({'meta.composite.units': units})
+        Benchmark.set_data({'meta.composite.direction': direction})
+        return True
 
     @staticmethod
     def start():
