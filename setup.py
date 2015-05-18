@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 install_requires = [
     'PyYAML',
@@ -18,7 +18,7 @@ setup(
     description='Library to aid in the creation of benchmark actions in Juju',
     install_requires=install_requires,
     url="https://github.com/juju-solutions/charm-benchmark",
-    packages=['charmbenchmark', 'charmbenchmark.cli'],
+    packages=find_packages(),
     entry_points={
         'console_scripts': [
             'benchmark-start = charmbenchmark.cli.start:main',
