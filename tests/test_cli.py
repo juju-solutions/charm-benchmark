@@ -44,8 +44,12 @@ class TestBenchmark(TestCase):
         self.addCleanup(_m.stop)
         return m
 
-    def test_foo(self):
-        pass
+    @mock.patch('charmbenchmark.action_set')
+    def test_set_data(self, action_set):
+        action_set.return_value = True
+        data = {'key': 'value'}
+        self.assertTrue(Benchmark.set_data(data))
+        action_set.assert_called_once_with(data)
 
     @mock.patch('charmbenchmark.relation_get')
     @mock.patch('charmbenchmark.relation_set')
@@ -83,21 +87,15 @@ class TestBenchmark(TestCase):
             relation_get.return_value = None
             Benchmark(actions)
 
-
     @mock.patch('charmbenchmark.action_set')
     def test_benchmark_start_oserror(self, action_set):
         action_set.side_effect = OSError('File not found')
         self.assertFalse(Benchmark.start())
 
     @mock.patch('charmbenchmark.action_set')
-    def test_benchmark_start_oserror(self, action_set):
+    def test_benchmark_finish_oserror(self, action_set):
         action_set.side_effect = OSError('File not found')
-        self.assertFalse(Benchmark.start())
-
-    @mock.patch('charmbenchmark.action_set')
-    def test_benchmark_start_oserror(self, action_set):
-        action_set.side_effect = OSError('File not found')
-        self.assertFalse(Benchmark.start())
+        self.assertFalse(Benchmark.finish())
 
     @mock.patch('charmbenchmark.action_set')
     @mock.patch('os.path.exists')
@@ -119,8 +117,7 @@ class TestBenchmark(TestCase):
         action_set.return_value = True
         self.assertTrue(Benchmark.finish())
 
-    @mock.patch('charmbenchmark.action_set')
-    def test_benchmark_set_composite_score(self, action_set):
-        action_set.return_value = True
+    @mock.patch('charmbenchmark.Benchmark.set_data')
+    def test_benchmark_set_composite_score(self, set_data):
+        set_data.return_value = True
         self.assertTrue(Benchmark.set_composite_score(15.7, 'hits/sec', 'desc'))
-        action_set.assert_called_once_with({'meta.composite': {'value': 15.7, 'units': 'hits/sec', 'direction': 'desc'}})
