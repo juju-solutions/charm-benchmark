@@ -1,3 +1,4 @@
+deb_dist/
 *.pyc
 .installed.cfg
 bin
