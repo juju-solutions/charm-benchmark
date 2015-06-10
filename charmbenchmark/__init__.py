@@ -75,16 +75,24 @@ class Benchmark():
             return False
 
     @staticmethod
-    def set_composite_score(value, units, direction='asc'):
+    def set_composite_score(value, units='', direction=None):
         """
         Set the composite score for a benchmark run. This is a single number
         representative of the benchmark results. This could be the most
         important metric, or an amalgamation of metric scores.
         """
         Benchmark.set_data({'meta.composite.value': value})
+
+        # The GUI expects this key, even if it's empty
         Benchmark.set_data({'meta.composite.units': units})
-        Benchmark.set_data({'meta.composite.direction': direction})
+
+        if direction:
+            Benchmark.set_data({'meta.composite.direction': direction})
         return True
+
+    @staticmethod
+    def set_meta(key, value):
+        Benchmark.set_data({'meta.%s.value' % key: value})
 
     @staticmethod
     def start():
