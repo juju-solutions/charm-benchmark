@@ -10,13 +10,11 @@ def main():
     parser.add_argument(
         "composite",
         metavar='composite',
-        # nargs='+',
         help='The composite score of the benchmark run.'
     )
     parser.add_argument(
         "units",
         metavar='units',
-        # nargs='+',
         help='''
         The type of units used to measure the composite, i.e., requests/sec.
         '''
@@ -24,7 +22,6 @@ def main():
     parser.add_argument(
         "direction",
         metavar='direction',
-        # nargs='+',
         help='''
         The direction of how the composite should be interpreted. 'asc' if a
         lower number is better; 'desc' if a higher number is better.
