@@ -91,12 +91,8 @@ class Benchmark():
         return True
 
     @staticmethod
-    def set_meta(key, value, units=None, direction=None):
+    def set_meta(key, value):
         Benchmark.set_data({'meta.%s.value' % key: value})
-        if units:
-            Benchmark.set_data({'meta.%s.units' % key: units})
-        if direction:
-            Benchmark.set_data({'meta.%s.direction' % key: direction})
 
     @staticmethod
     def start():
