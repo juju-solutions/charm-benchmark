@@ -75,7 +75,7 @@ py3test:
 .PHONY: coverage
 coverage: $(NOSE)
 	@echo Testing with coverage...
-	@$(NOSE) --nologcapture --with-coverage --cover-package=$(PROJECT)
+	@$(NOSE) --nologcapture --with-coverage --cover-package=$(PROJECT) --cover-package=$(PROJECT).cli
 
 .PHONY: lint
 lint:
