@@ -19,19 +19,32 @@ class Benchmark():
 
     :param list actions: Define the actions that are also benchmarks
 
-    From inside the benchmark-relation-changed hook, you would
-    Benchmark(['memory', 'cpu', 'disk', 'smoke', 'custom'])
 
     Examples:
 
-        siege = Benchmark(['siege'])
-        siege.start()
-        [... run siege ...]
+    Notify the Benchmark GUI of the actions that are benchmark-enabled, usually run from benchmark-relation-[joined|changed]::
+
+        Benchmark(['memory', 'cpu', 'disk', 'smoke', 'custom'])
+
+
+    From within a benchmark-enabled action::
+
+        # Begins timing of a benchmark
+        Benchmark.start()
+
+        [... run benchmark and parse results ...]
+
+        Benchmark.set_data({'results.transactions.value': 1096})
+        Benchmark.set_data({'results.transactions.units': 'hits'})
+
+        # Store a meta key, available via ``juju action fetch`` but not shown in the Benchmark GUI
+        Benchmark.set_meta('myuuid', '1b231f32-16c3-11e5-ac89-14109fd63717')
+
         # The higher the score, the better the benchmark
-        siege.set_composite_score(16.70, 'trans/sec', 'desc')
-        siege.finish()
+        Benchmark.set_composite_score(16.70, 'hits/sec', 'desc')
 
-
+        # Finish the timing of a benchmark
+        Benchmark.finish()
     """
 
     required_keys = [
@@ -68,6 +81,11 @@ class Benchmark():
 
     @staticmethod
     def set_data(value):
+        """
+        Set the key:value to be passed to ``action_set``
+
+        :param list value: A hash containing the key and value
+        """
         try:
             action_set(value)
             return True
