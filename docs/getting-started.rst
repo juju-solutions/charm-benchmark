@@ -20,21 +20,10 @@ There are two ways of using charm-benchmark: via direct calls to the Python libr
     import subprocess
 
     try:
-        from charmhelpers.core.hookenv import action_get
+        from charmhelpers.contrib.benchmark import Benchmark
     except ImportError:
         subprocess.check_call(['apt-get', 'install', '-y', 'python-pip'])
-        subprocess.check_call(['pip', 'install', 'charmhelpers'])
-        from charmhelpers.contrib.benchmark import Benchmark
-
-    try:
-        from charmbenchmark import Benchmark
-    except ImportError:
-        import subprocess
-        from charmhelpers.fetch import apt_install
-
-        apt_install('python-pip', fatal=True)
-        cmd = ['pip', 'install', '-U', 'charm-benchmark']
-        subprocess.call(cmd)
+        subprocess.check_call(['pip', 'install', 'charm-benchmark'])
         from charmbenchmark import Benchmark
 
 
@@ -81,7 +70,13 @@ There are two ways of using charm-benchmark: via direct calls to the Python libr
 
     #!/bin/bash
     set -eux
-    benchmark-start || true
+
+    # Make sure charm-benchmark is installed
+    if ! hash benchmark-start 2>/dev/null; then
+        apt-get install -y python-pip
+        pip install -U charm-benchmark
+    fi
+    benchmark-start
 
     # Run your benchmark
 
