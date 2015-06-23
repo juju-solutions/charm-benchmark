@@ -46,6 +46,16 @@ lib/python*/site-packages/$(PROJECT).egg-link:
 sysdeps:
 	sudo apt-get $(shell tty -s || echo -y) install python-dev juju-core bzr python-setuptools
 
+docs:
+	- [ -z "`dpkg -l | grep python-sphinx`" ] && sudo apt-get install python-sphinx -y
+	- [ -z "`dpkg -l | grep python-pip`" ] && sudo apt-get install python-pip -y
+	- [ -z "`pip list | grep -i sphinx-pypi-upload`" ] && sudo pip install sphinx-pypi-upload
+	cd docs && make html && cd -
+.PHONY: docs
+
+release: docs
+	$(PYTHON) setup.py sdist upload upload_sphinx
+
 # ###########
 # Develop
 # ###########
