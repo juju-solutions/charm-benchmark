@@ -1,0 +1,5 @@
+image: bradrydzewski/python:3.3
+script:
+  - pip install -e .
+  - pip install -r test-requires.txt
+  - nosetests --nologcapture --with-coverage --cover-package=charmbenchmark
