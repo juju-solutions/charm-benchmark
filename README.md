@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/juju-solutions/charm-benchmark.svg?branch=master)](https://travis-ci.org/juju-solutions/charm-benchmark)
+[![Build Status](http://drone.dasroot.net/api/badge/github.com/juju-solutions/charm-benchmark/status.svg?branch=master)](http://drone.dasroot.net/github.com/juju-solutions/charm-benchmark)
 [![Coverage Status](https://coveralls.io/repos/juju-solutions/charm-benchmark/badge.svg)](https://coveralls.io/r/juju-solutions/charm-benchmark)
 
 # charm-benchmark
