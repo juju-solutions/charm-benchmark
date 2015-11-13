@@ -105,12 +105,12 @@ class TestBenchmark(TestCase):
         exists.return_value = True
         check_output.return_value = "data"
         action_set.return_value = True
-        relation_ids.return_value = ['collector:0']
+        relation_ids.return_value = ['benchmark:1']
 
         self.assertTrue(Benchmark.start())
 
         relation_set.assert_called_once_with(
-            relation_id='collector:0',
+            relation_id='benchmark:1',
             relation_settings={'action_id': 'my_action'}
         )
 

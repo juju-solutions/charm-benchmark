@@ -123,11 +123,11 @@ class Benchmark():
         if os.path.exists(COLLECT_PROFILE_DATA):
             subprocess.check_output([COLLECT_PROFILE_DATA])
 
-        # Tell collector charm the action_id via the collector relation.
+        # Tell collector charm the action_id via the benchmark relation.
         # The collector will pass the action_id to its peers,
         # triggering profile data collection on all collectors in the
         # environment.
-        for rid in relation_ids('collector'):
+        for rid in relation_ids('benchmark'):
             relation_set(relation_id=rid, relation_settings={
                 'action_id': os.environ.get('JUJU_ACTION_ID')
             })
