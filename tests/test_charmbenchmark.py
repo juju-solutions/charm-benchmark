@@ -1,5 +1,3 @@
-import os
-import unittest
 from testtools import TestCase
 
 import mock
@@ -55,19 +53,19 @@ class TestBenchmark(TestCase):
     @mock.patch('charmbenchmark.relation_set')
     @mock.patch('charmbenchmark.relation_ids')
     @mock.patch('charmbenchmark.in_relation_hook')
-    def test_benchmark_init(self, in_relation_hook, relation_ids, relation_set, relation_get):
+    def test_benchmark_init(self, in_relation_hook, relation_ids,
+                            relation_set, relation_get):
 
         in_relation_hook.return_value = True
-        relation_ids.return_value = ['benchmark:0']
+        relation_data = FAKE_RELATION['benchmark:0']['benchmark/0']
+        relation_ids.return_value = FAKE_RELATION.keys()
+        relation_get.side_effect = lambda k: relation_data.get(k)
         actions = ['asdf', 'foobar']
 
         with patch_open() as (_open, _file):
             b = Benchmark(actions)
 
             self.assertIsInstance(b, Benchmark)
-
-            self.assertTrue(relation_get.called)
-            self.assertTrue(relation_set.called)
 
             relation_ids.assert_called_once_with('benchmark')
 
@@ -81,11 +79,8 @@ class TestBenchmark(TestCase):
 
             # Test benchmark.conf
             _open.assert_called_with('/etc/benchmark.conf', 'w')
-            for key, val in iter(FAKE_RELATION['benchmark:0']['benchmark/0'].items()):
-                _file.write.assert_any_called("%s=%s\n" % (key, val))
-
-            relation_get.return_value = None
-            Benchmark(actions)
+            for key, val in relation_data.items():
+                _file.write.assert_any_call("%s=%s\n" % (key, val))
 
     @mock.patch('charmbenchmark.action_set')
     def test_benchmark_start_oserror(self, action_set):
@@ -97,16 +92,27 @@ class TestBenchmark(TestCase):
         action_set.side_effect = OSError('File not found')
         self.assertFalse(Benchmark.finish())
 
+    @mock.patch.dict('charmbenchmark.os.environ', {
+        'JUJU_ACTION_ID': 'my_action'})
+    @mock.patch('charmbenchmark.relation_set')
+    @mock.patch('charmbenchmark.relation_ids')
     @mock.patch('charmbenchmark.action_set')
     @mock.patch('os.path.exists')
     @mock.patch('subprocess.check_output')
-    def test_benchmark_start(self, check_output, exists, action_set):
+    def test_benchmark_start(self, check_output, exists, action_set,
+                             relation_ids, relation_set):
 
         exists.return_value = True
         check_output.return_value = "data"
         action_set.return_value = True
+        relation_ids.return_value = ['benchmark:1']
 
         self.assertTrue(Benchmark.start())
+
+        relation_set.assert_called_once_with(
+            relation_id='benchmark:1',
+            relation_settings={'action_id': 'my_action'}
+        )
 
         COLLECT_PROFILE_DATA = '/usr/local/bin/collect-profile-data'
         exists.assert_any_call(COLLECT_PROFILE_DATA)
@@ -120,7 +126,8 @@ class TestBenchmark(TestCase):
     @mock.patch('charmbenchmark.Benchmark.set_data')
     def test_benchmark_set_composite_score(self, set_data):
         set_data.return_value = True
-        self.assertTrue(Benchmark.set_composite_score(15.7, 'hits/sec', 'desc'))
+        self.assertTrue(Benchmark.set_composite_score(
+            15.7, 'hits/sec', 'desc'))
 
     @mock.patch('charmbenchmark.Benchmark.set_data')
     @mock.patch('charmbenchmark.Benchmark.set_meta')
@@ -144,8 +151,6 @@ class TestBenchmark(TestCase):
         # Benchmark.set_data({'meta.%s.direction' % key: direction})
         # set_data.reset_mock()
         set_meta.reset_mock()
-
-
 
         # Test with all parameters
         Benchmark.set_meta(key, value, units, direction)
