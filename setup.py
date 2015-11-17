@@ -1,3 +1,5 @@
+import os
+
 from setuptools import setup, find_packages
 
 install_requires = [
@@ -11,10 +13,13 @@ tests_require = [
     'pep8',
 ]
 
+HERE = os.path.dirname(__file__)
+with open(os.path.join(HERE, 'VERSION')) as f:
+    VERSION = f.read().strip()
 
 setup(
     name='charm-benchmark',
-    version='1.1.1',
+    version=VERSION,
     description='Library to aid in the creation of benchmark actions in Juju',
     install_requires=install_requires,
     url="https://github.com/juju-solutions/charm-benchmark",
