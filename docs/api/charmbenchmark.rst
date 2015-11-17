@@ -1,12 +1,6 @@
 API Documentation
 =================
 
-.. toctree::
-    :maxdepth: 2
-
-    charmbenchmark
-    charmbenchmark.cli
-
 .. automodule:: charmbenchmark
     :members:
     :undoc-members:
