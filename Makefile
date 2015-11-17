@@ -54,7 +54,7 @@ docs:
 .PHONY: docs
 
 release: docs
-	$(PYTHON) setup.py sdist upload upload_sphinx
+	python setup.py sdist upload upload_sphinx
 
 # ###########
 # Develop
