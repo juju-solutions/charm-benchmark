@@ -93,7 +93,7 @@ class TestBenchmark(TestCase):
         self.assertFalse(Benchmark.finish())
 
     @mock.patch.dict('charmbenchmark.os.environ', {
-        'JUJU_ACTION_ID': 'my_action'})
+        'JUJU_ACTION_UUID': 'my_action'})
     @mock.patch('charmbenchmark.relation_set')
     @mock.patch('charmbenchmark.relation_ids')
     @mock.patch('charmbenchmark.action_set')
