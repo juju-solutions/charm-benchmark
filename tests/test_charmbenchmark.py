@@ -27,4 +27,8 @@ class TestBenchmark(TestCase):
 
         b = Benchmark()
         warn.assert_called_with('The charm-benchmark library has been renamed charms.benchmark. Please update your code accordingly or report a bug with the upstream project.', DeprecationWarning)
-        init.assert_called_with(b, None)
+        init.assert_called_with(None)
+
+        actions = ['foo', 'bar']
+        b = Benchmark(actions)
+        init.assert_called_with(actions)
