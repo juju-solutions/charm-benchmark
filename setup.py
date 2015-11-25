@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 install_requires = [
     'PyYAML',
-    'charms.benchmark>=1.0.2<1.1'
+    'charms.benchmark>=1.0.2,<1.1'
 ]
 
 tests_require = [
