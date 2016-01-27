@@ -4,7 +4,7 @@
 
 # Deprecation notice:
 
-This project has been deprecated and replaced by http://github.com/juju-solutions/charms.benchmark. Please use that library instead. This one is no longer maintained.
+This project has been deprecated and replaced by [charms.benchmark](http://github.com/juju-solutions/charms.benchmark). Please use that library instead. This one is no longer maintained.
 
 # charm-benchmark
 
